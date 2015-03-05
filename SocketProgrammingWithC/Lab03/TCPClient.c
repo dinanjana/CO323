@@ -42,20 +42,27 @@ int main(int argc, char**argv)
 
 	n=recvfrom(sockfd,buffer,10000,0,NULL,NULL);
 	buffer[n]=0; 
-	printf("Received Size:%s\n",buffer);
+	
 
 	int size = buffer[0] - '0';
-	//char buffer2[size];
-	int i = 0;
-	for(i = 0 ; i < size + 1 ; i = i + 1000){
 
-		n=recvfrom(sockfd,buffer,size,i,NULL,NULL);
-		//buffer[n]=0;
-		
-	}
+	printf("Received raw size:\n%d\n",size);
+	
+	printf("Received file:\n%s\n",buffer);
 
-	buffer[n]=0;
-	printf("Received:%s\n",buffer2);
+	FILE *fptr; 
+	fptr=fopen("Recieved.txt","w"); 
+		if(fptr==NULL){
+	 	
+		printf("Error!"); 
+		exit(1); 
+
+		}
+
+	fprintf(fptr,"%s",buffer); 
+	fclose(fptr); 
+	
+	
 
 return 0;
 }

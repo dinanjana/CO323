@@ -11,7 +11,7 @@ int main(int argc, char**argv)
 	socklen_t clilen;
 	char* banner = "Hello TCP client! This is TCP server";
 	char buffer[100];
-	char banner1[10000],ch;
+	char banner1[1000],ch;
 	//char file_name [25] ; //"TCPClient.c";
 	char file_size[] = "10000";
 	
@@ -36,16 +36,18 @@ int main(int argc, char**argv)
 	//n = recvfrom(connfd,buffer,2000,0,(struct sockaddr *)&cliaddr,&clilen);
 	
 	n = recvfrom(connfd,buffer,100,0,(struct sockaddr *)&cliaddr,&clilen);
-	//buffer[n] = 0;
-	printf("Received:%s\n",buffer);
+	
 	char file_name [n] ;
+	
 	int j = 0;
+	//Read the file name
 	for(j = 0 ; j < n ; j++){
 	
 		file_name[j] = buffer [j];
 	
 	}
-	printf("Received:%s\n",file_name);
+
+	printf("Received file name:%s\n",file_name);
 	
 	sendto(connfd,file_size,strlen(file_size),0,(struct sockaddr
 				*)&cliaddr,sizeof(cliaddr));
@@ -61,33 +63,33 @@ int main(int argc, char**argv)
       		exit(EXIT_FAILURE);
    	}
  
-   	printf("The contents of %s file are :\n", file_name);
+   	;
    	
-   	int i = 0 ;
+   	int i = 0 ;//Start reading the file
    		while( ( ch = fgetc(fp) ) != EOF ){
-      			printf("%c",ch);
+      		
       			
       			banner1[i] = ch;
       			i++;
-      			/*if(i == 999){
+      			if(i == 999){
       				
       				sendto(connfd,banner1,strlen(banner1),0,(struct sockaddr
 				*)&cliaddr,sizeof(cliaddr));
 				i = 0;
-      			
-      			
-      			}*/
+      			      			
+      			}
+			
+			
       			
       		}
 
-		sendto(connfd,banner1,strlen(banner1),0,(struct sockaddr
-				*)&cliaddr,sizeof(cliaddr));
+		sendto(connfd,banner1,i,0,(struct sockaddr
+		*)&cliaddr,sizeof(cliaddr));
       		
  
    	fclose(fp);
 	buffer[n] = 0;
-	//sendto(connfd,banner1,strlen(banner1),0,(struct sockaddr
-	//*)&cliaddr,sizeof(cliaddr));
-	printf("Received:%s\n",buffer);
+	
+	
 return 0;
 }
